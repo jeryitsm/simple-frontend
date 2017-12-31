@@ -1,0 +1,26 @@
+{
+    "test":"test",
+    "SEARCH":"Search",
+    "ADD":"Add",
+    "PRODUCT":"Product",
+    "EDIT":"Edit",
+    "REMOVE":"Remove",
+    "UPDATE":"Update",
+    "BUY":"Buy",
+    "NOW":"Now",
+    "QTY":"Quantity",
+    "PRODUCTCODE":"Product Code",
+    "NAME":"Name",
+    "DETAIL":"Detail",
+    "GROUPID":"Group Id",
+    "PRICE":"Price",
+    "CANCEL" :"Cancel",
+    "TO":"To",
+    "CART":"Cart",
+    "PAY":"Pay",
+    "TOTAL":"Total",
+    "SUMMARY": "Order Summary",
+    "ITEMS":"Items",
+    "SIGNIN":"SIGN IN"
+
+}

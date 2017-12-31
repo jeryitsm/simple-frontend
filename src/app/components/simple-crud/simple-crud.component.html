@@ -1,0 +1,220 @@
+<div class="container">
+  <p>
+    <input type="text" class="form-control" placeholder="{{ 'SEARCH' | translate}}" #SearchInput (input)="filterItem(SearchInput.value)">
+    <br>
+    <button (click)="openModal(addproduct)" type="button" class="btn btn-info">
+      <i class="glyphicon glyphicon-plus"></i> {{ 'ADD'| translate}} {{ 'PRODUCT'| translate}}</button>
+    <br><br>
+    <button type="button" class="btn btn-default" (click)="openModal(cart)">
+      <i class="glyphicon glyphicon-shopping-cart">
+        <span class="badge">{{badgeProduct}}</span>
+      </i>
+    </button>
+  </p>
+  <div class="row">
+    <div class="col-sm-4 col-md-4" *ngFor="let product of productlist">
+      <div class="thumbnail">
+        <img src="{{product.product_img}}" style="height: 250px;width: 100%;cursor:pointer" (click)="openModal(viweproduct)" (click)="productGetById(product._id,'view')">
+        <div class="caption">
+          <h3>{{product.product_name}}</h3>
+          <h4>{{product.product_price|currency:'USD':true:'.2-2'}}</h4>
+          <h4>{{ 'QTY'| translate}}: {{product.product_qty}} </h4>
+          <p>
+            <button class="btn btn-primary" [disabled]="product.product_qty <=0" role="button" (click)="addtocart(product)">{{ 'BUY'| translate}} {{ 'NOW'| translate}}</button>
+            <a class="btn btn-warning" role="button" (click)="openModal(editproduct)" (click)="productGetById(product._id,'edit')">{{ 'EDIT'| translate}}</a>
+            <a class="btn btn-danger" role="button" (click)="productRemove(product)">{{ 'REMOVE'| translate}}</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <gridster [options]="options">
+    <gridster-item [item]="item" *ngFor="let item of productlist">
+    </gridster-item>
+</gridster> -->
+
+<ng-template #addproduct>
+  <div class="modal-content">
+    <div class="modal-header">
+      <label for="basic-url">{{ 'ADD'| translate}} {{ 'PRODUCT'| translate}}</label>
+      <!-- <h4 class="modal-title pull-left">Modal</h4> -->
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <!-- <label for="basic-url">Your vanity URL</label> -->
+      <div class="input-group" style="width: 100%">
+        <span class="input-group-addon" style="width: 100px">{{'PRODUCTCODE'| translate}}*</span>
+        <input type="text" class="form-control" [(ngModel)]="code">
+      </div>
+      <br>
+      <div class="input-group" style="width: 100%">
+        <span class="input-group-addon" style="width: 100px">{{'NAME'| translate}}*</span>
+        <input type="text" class="form-control" [(ngModel)]="name">
+      </div>
+      <br>
+      <div class="input-group" style="width: 100%">
+        <span class="input-group-addon" style="width: 100px">{{'DETAIL'| translate}}</span>
+        <textarea type="textarea" class="form-control" rows="2" [(ngModel)]="detail"></textarea>
+      </div>
+      <br>
+      <div class="input-group" style="width: 100%">
+        <span class="input-group-addon" style="width: 100px">{{'GROUPID'| translate}}</span>
+        <input type="text" class="form-control" [(ngModel)]="group">
+      </div>
+      <br>
+      <div class="input-group" style="width: 100%">
+        <span class="input-group-addon" style="width: 100px">{{'QTY'| translate}}</span>
+        <input type="number" class="form-control" [(ngModel)]="qty">
+      </div>
+      <br>
+      <div class="input-group" style="width: 100%">
+        <span class="input-group-addon" style="width: 100px">{{'PRICE'| translate}}</span>
+        <input type="number" class="form-control" [(ngModel)]="price">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" (click)="modalRef.hide()">{{'CANCEL'| translate}}
+        <i class="glyphicon glyphicon-floppy-remove"></i>
+      </button>
+      <button (click)="productCreate(code,name,detail,group,qty,price)" type="button" class="btn btn-success">{{'ADD'| translate}}
+        <i class="glyphicon glyphicon-floppy-save"></i>
+      </button>
+    </div>
+  </div>
+
+</ng-template>
+<ng-template #editproduct>
+  <div class="modal-content">
+    <div class="modal-header">
+      <label for="basic-url">{{ 'EDIT'| translate}} {{ 'PRODUCT'| translate}}</label>
+    </div>
+    <div class="modal-body" *ngIf="tmpProduct !== null">
+      <div class="row">
+        <div class="col-md-5">
+          <img src="{{tmpProduct.product_img}}" style="height: 200px;width: 100%">
+        </div>
+        <div class="col-md-7">
+          <div class="input-group" style="width: 100%">
+            <span class="input-group-addon" style="width: 100px">{{'PRODUCTCODE'| translate}}</span>
+            <input type="text" class="form-control" [(ngModel)]="tmpProduct.product_code">
+          </div>
+          <br>
+          <div class="input-group" style="width: 100%">
+            <span class="input-group-addon" style="width: 100px">{{'NAME'| translate}}</span>
+            <input type="text" class="form-control" [(ngModel)]="tmpProduct.product_name">
+          </div>
+          <br>
+          <div class="input-group" style="width: 100%">
+            <span class="input-group-addon" style="width: 100px">{{'DETAIL'| translate}}</span>
+            <textarea type="textarea" class="form-control" rows="2" [(ngModel)]="tmpProduct.product_detail"></textarea>
+          </div>
+          <br>
+          <div class="input-group" style="width: 100%">
+            <span class="input-group-addon" style="width: 100px">{{'GROUPID'| translate}}</span>
+            <input type="text" class="form-control" [(ngModel)]="tmpProduct.product_group">
+          </div>
+          <br>
+          <div class="input-group" style="width: 100%">
+            <span class="input-group-addon" style="width: 100px">{{'QTY'| translate}}</span>
+            <input type="number" class="form-control" [(ngModel)]="tmpProduct.product_qty">
+          </div>
+          <br>
+          <div class="input-group" style="width: 100%">
+            <span class="input-group-addon" style="width: 100px">{{'PRICE'| translate}}</span>
+            <input type="number" class="form-control" [(ngModel)]="tmpProduct.product_price">
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" (click)="modalRef.hide()">{{'CANCEL'| translate}}
+        <i class="glyphicon glyphicon-floppy-remove"></i>
+      </button>
+      <button (click)="productUpdate(tmpProduct)" type="button" class="btn btn-success" >{{'UPDATE'| translate}}
+        <i class="glyphicon glyphicon-floppy-save"></i>
+      </button>
+    </div>
+  </div>
+</ng-template>
+<ng-template #viweproduct>
+  <div class="modal-content">
+    <div class="modal-header">
+      <label for="basic-url">{{'PRODUCT'| translate}}</label>
+    </div>
+    <div class="modal-body" *ngIf="tmpProduct !== null">
+      <div class="row">
+        <div class="col-md-5">
+          <img src="{{tmpProduct.product_img}}" style="height: 200px;width: 100%">
+        </div>
+        <div class="col-md-7">
+          <!-- <div class="input-group" style="width: 100%">
+                <span class="input-group-addon" style="width: 100px">Code</span>
+                <input type="text" class="form-control" [(ngModel)]="tmpProduct.product_code">
+              </div> -->
+          <br>
+          <div class="input-group" style="width: 100%">
+            <h2>{{tmpProduct.product_name}}</h2>
+          </div>
+          <br>
+          <div class="input-group" style="width: 100%">
+            <h3>{{tmpProduct.product_detail}}</h3>
+          </div>
+          <br>
+          <div class="input-group" style="width: 100%">
+            <h5>{{'QTY'| translate}} : {{tmpProduct.product_qty}}</h5>
+          </div>
+          <br>
+          <div class="input-group" style="width: 100%">
+            <h3>{{tmpProduct.product_price|currency:'USD':true:'.2-2'}}</h3>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="modal-footer">
+
+      <button (click)="addtocart(tmpProduct)" type="button" class="btn btn-primary form-control">{{'ADD'| translate}} {{'TO'| translate}} {{'CART'| translate}} </button>
+    </div>
+  </div>
+</ng-template>
+<ng-template #cart>
+  <div class="modal-content">
+    <div class="modal-header">
+      <label for="basic-url">{{'SUMMARY'| translate}} ({{tmpCart.length}} {{'ITEMS'| translate}})</label>
+    </div>
+    <div class="modal-body">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>{{'NAME'| translate}}</th>
+            <th>{{'QTY'| translate}}</th>
+            <th>{{'PRICE'| translate}}</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let product of tmpCart">
+            <td>{{product.product_name}}</td>
+            <td>{{product.qty}}</td>
+            <td>{{product.product_price|currency:'USD':true:'.2-2'}}</td>
+            <td>
+              <button (click)="removeCart(product)" class="btn btn-danger">
+                <i class="glyphicon glyphicon-remove"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+    <div class="modal-footer">
+      <h3>{{'TOTAL'| translate}} : {{tmpCart_total|currency:'USD':true:'.2-2'}}</h3>
+      <button [disabled]="tmpCart_total < 1 " (click)="payment()" type="button" class="form-control btn btn-warning" (click)="modalRef.hide()">{{'PAY'| translate}}</button>
+    </div>
+  </div>
+</ng-template>

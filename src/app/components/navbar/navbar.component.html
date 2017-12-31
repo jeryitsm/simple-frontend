@@ -1,0 +1,23 @@
+<nav class="navbar navbar-inverse bg-inverse navbar-fixed-top ">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      
+    </div>
+    <!-- <a routerLink=''>SIMPLE</a> -->
+    <form class="navbar-form navbar-right" role="search">
+        <p><a routerLink='user'>{{'SIGNIN'| translate}}</a></p>
+      <!--        
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="{{ 'SEARCH' | translate}}" #SearchInput (input)="filterItem(SearchInput.value)">
+      </div>
+      <button type="submit" class="btn btn-default"><i class="glyphicon glyphicon-search"></i></button>
+      <button type="button" class="btn btn-default" data-toggle="modal" data-target="#cartModal"><i class="glyphicon glyphicon-shopping-cart"> <span class="badge">{{badgeProduct}}</span></i></button> -->
+      <img src="/assets/img/lth.jpg" style="height: 20px;width: 30px;cursor:pointer" (click)="switchLanguage('th')">
+      <img src="/assets/img/len.png" style="height: 20px;width: 30px;cursor:pointer" (click)="switchLanguage('en')">
+    </form>
+
+  </div>
+</nav>
+<!-- 
+navbar works!
+<div>{{ 'test' | translate}}</div> -->
