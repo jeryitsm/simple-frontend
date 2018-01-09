@@ -21,6 +21,7 @@ export class ProductService {
   testnew() {
     this.httpClient.get(this.serviceURL).subscribe(data => {
       console.log(data);
+      
     }), (err: HttpErrorResponse) => {
       if (err.error instanceof Error) {
         console.log("client error ");

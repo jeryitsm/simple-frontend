@@ -1,0 +1,16 @@
+<div class="container">
+  <h1>Reactive Forms</h1>
+  <h2>Product Detail</h2>
+  <h3>
+    <i>FormControl in a FormGroup</i>
+  </h3>
+  <form [formGroup]="productForm" novalidate>
+    <div class="form-group">
+      <label class="center-block">product_name:
+        <input class="form-control" formControlName="product_name">
+      </label>
+    </div>
+  </form>
+  <p>Form value: {{ productForm.value | json }}</p>
+  <p>Form status: {{ productForm.status | json }}</p>
+</div>

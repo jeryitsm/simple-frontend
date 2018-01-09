@@ -4,7 +4,7 @@ import { ProductService } from '../../services/product.service';
 import { UserService } from '../../services/user.service';
 
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { GridsterConfig, GridsterItem }  from 'angular-gridster2';
+import { GridsterConfig, GridsterItem } from 'angular-gridster2';
 
 
 @Component({
@@ -50,13 +50,16 @@ export class SimpleCrudComponent implements OnInit {
   static itemResize(item, itemComponent) {
     // console.info('itemResized', item, itemComponent);
   }
+
   ngOnInit() {
+    // this.productService.testnew();
     this.reProduct()
     this.options = {
       itemChangeCallback: SimpleCrudComponent.itemChange,
       itemResizeCallback: SimpleCrudComponent.itemResize,
     };
   }
+
   reProduct() {
     let result = this.productService.getProductAll()
     result.then(data => {
@@ -70,9 +73,12 @@ export class SimpleCrudComponent implements OnInit {
       }
     })
   }
+
+
   productCreate(code, name, detail, group, qty, price) {
-    // console.log(code, name, detail, group, qty, price)
+    console.log(code, name, detail, group, qty, price)
     if (code && name) {
+
       let req = {
         product_code: code,
         product_name: name,
@@ -84,14 +90,8 @@ export class SimpleCrudComponent implements OnInit {
       }
       let result = this.productService.createProduct(req)
       result.then(data => {
-        if (data !== undefined && data.status) {
+        if (data !== undefined && data._id) {
           this.reProduct();
-          this.code = ''
-          this.name = ''
-          this.detail = ''
-          this.group = ''
-          this.qty = 0
-          this.price = 0
         } else {
           alert("Failed to add")
         }
@@ -101,33 +101,22 @@ export class SimpleCrudComponent implements OnInit {
     }
 
   }
+
+
   productUpdate(req, type) {
-    if (req._id) {
-      let reqLatest = {
-        _id: req.id
+    // console.log(req)
+    let result = this.productService.updateProduct(req)
+    result.then(data => {
+      if (data !== undefined && data.status) {
+        alert('update success')
+        this.reProduct();
+      } else {
+        alert("Failed")
       }
-      let result = this.productService.createProduct(reqLatest)
-      result.then(data => {
-        if (data !== undefined) {
-          let result = this.productService.updateProduct(req)
-          result.then(data => {
-            if (data !== undefined && data.status) {
-              alert('update success')
-              this.reProduct();
-              // this.openEditProductModal.nativeElement.click();
-            } else {
-              alert("Failed")
-            }
-          })
-
-        } else {
-
-        }
-      })
-    } else {
-      alert("Failed")
-    }
+    })
   }
+
+
   productRemove(id) {
     let req = {
       _id: id
@@ -150,6 +139,8 @@ export class SimpleCrudComponent implements OnInit {
       }
     })
   }
+
+
   productGetById(id, type) {
     if (id) {
       let req = {
@@ -173,9 +164,13 @@ export class SimpleCrudComponent implements OnInit {
       alert("Failed")
     }
   }
+
+
   getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
+
+
   removeCart(product) {
     // console.log('rrr',id);
     let index = this.tmpCart.indexOf(product);
@@ -185,6 +180,8 @@ export class SimpleCrudComponent implements OnInit {
       this.badgeProduct--;
     }
   }
+
+
   addtocart(product) {
     if (product) {
       // this.sendAnAutoDismissingAlert();
@@ -211,6 +208,8 @@ export class SimpleCrudComponent implements OnInit {
       // console.log(this.tmpCart);
     }
   }
+
+
   filterItem(value) {
     if (!value) this.reProduct(); //when nothing has typed
     let tmpProducts = this.productlist
@@ -218,8 +217,12 @@ export class SimpleCrudComponent implements OnInit {
       item => item.product_name.toLowerCase().indexOf(value.toLowerCase()) > -1
     )
   }
+
+
   closeCart() {
   }
+
+
   payment() {
     if (this.tmpCart) {
       for (let i in this.tmpCart) {
