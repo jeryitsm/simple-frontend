@@ -1,16 +1,66 @@
 <div class="container">
+
   <h1>Reactive Forms</h1>
-  <h2>Product Detail</h2>
+  <h4 *ngIf="isLoading">
+    <i>Loading Product ... </i>
+  </h4>
+
+  <h4 *ngIf="!isLoading">Select a product:</h4>
+  <nav>
+    <button (click)="getProduct()" class="btn btn-primary">Refresh</button>
+    <button class="btn btn-default" *ngFor="let product of products " (click)="select(product)">{{product.product_name}}</button>
+  </nav>
+
+  <h3>Product</h3>
+
+  <div *ngIf="selectedProduct">
+    <h3>Editing: {{selectedProduct.product_name}}</h3>
+  </div>
+
   <h3>
-    <i>FormControl in a FormGroup</i>
+    <i>A FormGroup with multiple FormControls</i>
   </h3>
-  <form [formGroup]="productForm" novalidate>
+  <form [formGroup]="productForm" (ngSubmit)="onSubmit()" novalidate>
+    <div style="margin-bottom: 1em">
+      <button type="submit" [disabled]="productForm.pristine" class="btn btn-success">Save</button> &nbsp;
+      <button type="reset" (click)="revert()" [disabled]="productForm.pristine" class="btn btn-danger">Revert</button>
+    </div>
     <div class="form-group">
-      <label class="center-block">product_name:
+      <label class="center-block">Product Code **:
+        <input class="form-control" formControlName="product_code">
+      </label>
+    </div>
+    <div class="form-group">
+      <label class="center-block">Product Name **:
         <input class="form-control" formControlName="product_name">
       </label>
     </div>
+    <div class="form-group">
+      <label class="center-block">Product Group:
+        <input class="form-control" formControlName="product_group">
+      </label>
+    </div>
+    <div class="form-group">
+      <label class="center-block">Product Detail:
+        <input class="form-control" formControlName="product_detail">
+      </label>
+    </div>
+    <div class="form-group">
+      <label class="center-block">Product Price:
+        <input type="number" class="form-control" formControlName="product_price">
+      </label>
+    </div>
+    <div class="form-group">
+      <label class="center-block">Product QTY:
+        <input type="number" class="form-control" formControlName="product_qty">
+      </label>
+    </div>
+
   </form>
-  <p>Form value: {{ productForm.value | json }}</p>
-  <p>Form status: {{ productForm.status | json }}</p>
+  <p>Value: {{ productForm.value | json }}</p>
+  <p>Status: {{ productForm.status | json }}</p>
+  <div>{{ this.productForm.get("product_name").value }} </div>
+  <!-- <h4>Product change log</h4>
+  <div *ngFor="let product of nameChangeLog">{{product.product_name}}</div> -->
+
 </div>

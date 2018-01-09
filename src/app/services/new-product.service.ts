@@ -8,10 +8,20 @@ export class NewProductService {
 
   constructor(private http: HttpClient) { }
 
-  // get():Observable<any>{
-  //   return this.http.get(url:"http://localhost:3000/api/todolists",options:{
-  //   observe: "body",
-  //   responseType: "json"
-  //   })
-  // }
+  getProduct() {
+    this.http
+      .get(this.serviceURL)
+      .retry(3)
+      .subscribe(data => {
+        // console.log(data)
+      }, (err: HttpErrorResponse) => {
+        // error
+        if (err.error instanceof Error) {
+          // client error
+          console.log('An error occurred:', err.error.message);
+        } else { // server error 
+          console.log(`Backend returned code ${err.status}, body was: ${err.error}`)
+        }
+      })
+  }
 }
