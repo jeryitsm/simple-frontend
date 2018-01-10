@@ -26,7 +26,7 @@ export class SimpleReactiveFormComponent implements OnInit {
   products: any
   isLoading = false
   selectedProduct: Product
-  _id:String
+  _id: String
 
   productForm: FormGroup
   product: Product
@@ -69,6 +69,7 @@ export class SimpleReactiveFormComponent implements OnInit {
 
   select(pro) {
     this.selectedProduct = pro
+    this._id = pro._id
     this.productForm.reset({
       product_code: pro.product_code,
       product_name: pro.product_name,
@@ -101,20 +102,114 @@ export class SimpleReactiveFormComponent implements OnInit {
     });
   }
 
-  prepareSaveProduct(): Product {
+  prepareSaveProduct() {
     const formModel = this.productForm.value;
 
-    const saveProduct: Product = {
-      _id: this._id as string,
-      product_code: formModel.product_code as string,
-      product_name: formModel.product_name as string,
-      product_group: formModel.product_group as string,
-      product_detail: formModel.product_detail as string,
-      product_price: formModel.product_price as number,
-      product_qty: formModel.product_qty as number,
-      product_img: "assets/img/" + this.getRandomInt(1, 12) + ".jpg"
-    };
-    return saveProduct;
+    if (!formModel.product_group) { // bug fix
+      formModel.product_group = " "
+    }
+    if (!formModel.product_detail) {
+      formModel.product_detail = " "
+    }
+    if (!formModel.product_price) {
+      formModel.product_price = 0
+    }
+    if (!formModel.product_qty) {
+      formModel.product_qty = 0
+    }
+
+    if (this._id == undefined) {
+      const saveProduct = {
+        product_code: formModel.product_code as string,
+        product_name: formModel.product_name as string,
+        product_group: formModel.product_group as string,
+        product_detail: formModel.product_detail as string,
+        product_price: formModel.product_price as number,
+        product_qty: formModel.product_qty as number,
+        product_img: "assets/img/" + this.getRandomInt(1, 12) + ".jpg"
+      };
+      this.http.post(this.serviceURL, saveProduct)
+        .subscribe(result => {
+          // console.log(result)
+          if (result) {
+            this.getProduct()
+            this.productForm.reset({
+              product_code: '',
+              product_name: '',
+              product_group: '',
+              product_detail: '',
+              product_price: 0,
+              product_qty: ''
+            });
+            alert("add product done")
+          }
+
+        },
+        (err: HttpErrorResponse) => {
+          // error
+          if (err.error instanceof Error) {
+            // client error
+            console.log('An error occurred:', err.error.message);
+          } else { // server error 
+            console.log(`Backend returned code ${err.status}, body was: ${err.error}`)
+          }
+          alert("add product erroe")
+        })
+
+    } if (this._id) {
+
+      if (!formModel.product_group) { // bug fix
+        formModel.product_group = " "
+      }
+      if (!formModel.product_detail) {
+        formModel.product_detail = " "
+      }
+      if (!formModel.product_price) {
+        formModel.product_price = 0
+      }
+      if (!formModel.product_qty) {
+        formModel.product_qty = 0
+      }
+
+      const saveProduct = {
+        _id: this._id as string,
+        product_code: formModel.product_code as string,
+        product_name: formModel.product_name as string,
+        product_group: formModel.product_group as string,
+        product_detail: formModel.product_detail as string,
+        product_price: formModel.product_price as number,
+        product_qty: formModel.product_qty as number,
+      };
+      this.http.put(this.serviceURL, saveProduct)
+        .subscribe(result => {
+          // console.log(result)
+          if (result) {
+            this._id = undefined
+            this.getProduct();
+            // this.productForm.reset({
+            //   product_code: '',
+            //   product_name: '',
+            //   product_group: '',
+            //   product_detail: '',
+            //   product_price: 0,
+            //   product_qty: ''
+            // });
+            alert("save product done")
+          }
+
+        },
+        (err: HttpErrorResponse) => {
+          // error
+          if (err.error instanceof Error) {
+            // client error
+            console.log('An error occurred:', err.error.message);
+          } else { // server error 
+            console.log(`Backend returned code ${err.status}, body was: ${err.error}`)
+          }
+          alert("save product erroe")
+        })
+    }
+
   }
 
   getRandomInt(min, max) {
@@ -122,10 +217,9 @@ export class SimpleReactiveFormComponent implements OnInit {
   }
 
   onSubmit() {
-    this.product = this.prepareSaveProduct();
-    console.log(this.product);
-    // คำสั่งที่จะเอาค่า this.staff ไปใช้งาน
-    this.ngOnChanges(this.product);
+    this.prepareSaveProduct();
+    // console.log(this.product);
+    // this.ngOnChanges(this.product);
   }
 
   revert() { this.ngOnChanges(null); }
