@@ -1,3 +1,140 @@
+<!-- <div class="ui-g ui-fluid">
+  <div class="ui-g-12 ui-md-4">
+      <h3>Basic</h3>
+      <p-calendar [(ngModel)]="date1"></p-calendar> {{date1|date}}
+  </div>
+  
+  <div class="ui-g-12 ui-md-4">
+      <h3>Spanish</h3>
+      <p-calendar [(ngModel)]="date2" [locale]="es" dateFormat="dd/mm/yy"></p-calendar> {{date2|date}}
+  </div>
+  
+  <div class="ui-g-12 ui-md-4">
+      <h3>Icon</h3>
+      <p-calendar [(ngModel)]="date3" [showIcon]="true"></p-calendar> <span style="margin-left:35px">{{date3|date}}</span>
+  </div>
+  
+  <div class="ui-g-12 ui-md-4">
+      <h3>Min-Max</h3>
+      <p-calendar [(ngModel)]="date4" [minDate]="minDate" [maxDate]="maxDate" readonlyInput="true"></p-calendar> {{date4|date}}
+  </div>
+  
+  <div class="ui-g-12 ui-md-4">
+      <h3>Disable Days</h3>
+      <p-calendar [(ngModel)]="date5" tabindex="0" [disabledDates]="invalidDates" [disabledDays]="[0,6]" readonlyInput="true"></p-calendar> {{date5|date}}
+  </div>
+  
+  <div class="ui-g-12 ui-md-4">
+      <h3>Navigators</h3>
+      <p-calendar [(ngModel)]="date6" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2030"></p-calendar> {{date6|date}}
+  </div>
+  
+  <div class="ui-g-12 ui-md-4">
+      <h3>Time</h3>
+      <p-calendar [(ngModel)]="date7" [showTime]="true"></p-calendar> {{date7}}
+  </div>
+  
+  <div class="ui-g-12 ui-md-4">
+      <h3>Time Only </h3>
+      <p-calendar [(ngModel)]="date8" [timeOnly]="true"></p-calendar>
+  </div>
+  
+  <div class="ui-g-12 ui-md-4">
+      <h3>Multiple </h3>
+      <p-calendar [(ngModel)]="dates" selectionMode="multiple" readonlyInput="true"></p-calendar>
+  </div>
+  
+  <div class="ui-g-12 ui-md-4">
+      <h3>Range</h3>
+      <p-calendar [(ngModel)]="rangeDates" selectionMode="range" readonlyInput="true"></p-calendar>
+  </div>
+  
+  <div class="ui-g-12 ui-md-4">
+      <h3>Button Bar</h3>
+      <p-calendar [(ngModel)]="date9" showButtonBar="true"></p-calendar>
+  </div>
+  
+  <div class="ui-g-12 ui-md-4">
+      <h3>Date Template</h3>
+      <p-calendar [(ngModel)]="date10">
+          <ng-template pTemplate="date" let-date>
+              <span [ngStyle]="{backgroundColor: (date.day < 21 && date.day > 10) ? '#7cc67c' : 'inherit'}" style="border-radius:50%">{{date.day}}</span>
+          </ng-template>
+      </p-calendar>
+  </div>
+</div> -->
 
-<button pButton type="button" class="ui-button-info">sad</button>
-<!-- <p-growl [value]="msgs"></p-growl> -->
+<!-- <h3>Inline</h3>
+<p-calendar [(ngModel)]="date11" [inline]="true"></p-calendar>  -->
+
+<!-- <p-dataList [value]="cars" [paginator]="true" [rows]="5">
+  <p-header>
+      List of Cars
+  </p-header>
+  <ng-template let-car pTemplate="item">
+      <div class="ui-g ui-fluid car-item">
+          <div class="ui-g-12 ui-md-3" style="text-align:center">
+              <img src="assets/showcase/images/demo/car/{{car.brand}}.png">
+          </div>
+          <div class="ui-g-12 ui-md-9 car-details">
+              <div class="ui-g">
+                  <div class="ui-g-2 ui-sm-6">Vin: </div>
+                  <div class="ui-g-10 ui-sm-6">{{car.vin}}</div>
+                  
+                  <div class="ui-g-2 ui-sm-6">Year: </div>
+                  <div class="ui-g-10 ui-sm-6">{{car.year}}</div>
+                  
+                  <div class="ui-g-2 ui-sm-6">Brand: </div>
+                  <div class="ui-g-10 ui-sm-6">{{car.brand}}</div>
+                  
+                  <div class="ui-g-2 ui-sm-6">Color: </div>
+                  <div class="ui-g-10 ui-sm-6">{{car.color}}</div>
+              </div>
+          </div>
+      </div>
+  </ng-template>
+</p-dataList> -->
+
+
+<p-growl [value]="msgs"></p-growl>
+
+<p-dataScroller [value]="product" [rows]="10" (onLazyLoad)="loadData($event)" [lazy]="true">
+    <p-header>
+        Scroll Down to to Load More
+    </p-header>
+    <ng-template let-product pTemplate="product">
+        <div class="ui-grid ui-grid-responsive ui-fluid" style="font-size:16px;padding:20px;border-bottom:1px solid #D5D5D5">
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-3" style="text-align:center"><img style="height: 150px;width: 90%;cursor:pointer" src="{{product.product_img}}"></div>
+                <div class="ui-grid-col-9">
+                    <div class="ui-grid ui-grid-responsive ui-fluid">
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-2">{{'PRODUCTCODE'| translate}} </div>
+                            <div class="ui-grid-col-10">{{product.product_code}}</div>
+                        </div>
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-2">{{'NAME'| translate}} </div>
+                            <div class="ui-grid-col-10">{{product.product_name}}</div>
+                        </div>
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-2">{{'DETAIL'| translate}} </div>
+                            <div class="ui-grid-col-10">{{product.product_detail}}</div>
+                        </div>
+                        <div class="ui-grid-row">
+                          <div class="ui-grid-col-2">{{'GROUPID'| translate}} </div>
+                          <div class="ui-grid-col-10">{{product.product_group}}</div>
+                      </div>
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-2">{{'PRICE'| translate}} </div>
+                            <div class="ui-grid-col-10">{{product.product_price}}</div>
+                        </div>
+                        <div class="ui-grid-row">
+                          <div class="ui-grid-col-2">{{'QTY'| translate}} </div>
+                          <div class="ui-grid-col-10">{{product.product_qty}}</div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</p-dataScroller>

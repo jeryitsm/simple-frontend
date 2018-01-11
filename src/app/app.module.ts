@@ -30,6 +30,10 @@ import { SimpleAgGirdComponent } from './components/simple-ag-gird/simple-ag-gir
 import { AgGridModule } from 'ag-grid-angular/main';
 import { AccordionModule } from 'primeng/components/accordion/accordion';
 import { MenuItem } from 'primeng/components/common/api';
+import { ButtonModule, DataScrollerModule, CalendarModule, DataListModule, DialogModule, GrowlModule } from 'primeng/primeng';
+
+// import {AccordionModule} from 'primeng/primeng';     //accordion and accordion tab
+// import {MenuItem} from 'primeng/primeng';            //api
 
 import { ProductInterceptor } from './services/product-interceptor';
 import { SimpleTestsComponent } from './components/simple-tests/simple-tests.component';
@@ -60,6 +64,12 @@ const routes: Routes = [
     ReactiveFormsModule,
     BrowserAnimationsModule,
     AccordionModule,
+    ButtonModule,
+    DataScrollerModule,
+    CalendarModule,
+    DataListModule,
+    DialogModule,
+    GrowlModule,
     GridsterModule,
     RouterModule.forRoot(routes),
     BrowserModule,
