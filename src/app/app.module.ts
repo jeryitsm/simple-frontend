@@ -16,6 +16,7 @@ import { SimpleCrudComponent } from './components/simple-crud/simple-crud.compon
 import { ProductService } from './services/product.service';
 import { UserService } from './services/user.service';
 import { NewProductService } from './services/new-product.service';
+import { AuthenticationService } from './services/authentication.service';
 
 import { TranslateModule, TranslateLoader, TranslateStaticLoader } from 'ng2-translate';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -30,7 +31,7 @@ import { SimpleAgGirdComponent } from './components/simple-ag-gird/simple-ag-gir
 import { AgGridModule } from 'ag-grid-angular/main';
 import { AccordionModule } from 'primeng/components/accordion/accordion';
 import { MenuItem } from 'primeng/components/common/api';
-import { ButtonModule, DataScrollerModule, CalendarModule, DataListModule, DialogModule, GrowlModule } from 'primeng/primeng';
+import { SidebarModule,ButtonModule, DataScrollerModule, CalendarModule, DataListModule, DialogModule, GrowlModule } from 'primeng/primeng';
 
 // import {AccordionModule} from 'primeng/primeng';     //accordion and accordion tab
 // import {MenuItem} from 'primeng/primeng';            //api
@@ -39,6 +40,11 @@ import { ProductInterceptor } from './services/product-interceptor';
 import { SimpleTestsComponent } from './components/simple-tests/simple-tests.component';
 import { SimplePrimengComponent } from './components/simple-primeng/simple-primeng.component';
 import { SimpleReactiveFormComponent } from './components/simple-reactive-form/simple-reactive-form.component';
+
+import { AngularFireModule } from 'angularfire2';
+import { environment } from '../environments/environment';
+import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { AngularFireAuthModule } from 'angularfire2/auth';
 
 const routes: Routes = [
   { path: 'app-simple-reactive-form', component: SimpleReactiveFormComponent },
@@ -61,6 +67,9 @@ const routes: Routes = [
     SimpleReactiveFormComponent
   ],
   imports: [
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule,
+    AngularFireAuthModule, 
     ReactiveFormsModule,
     BrowserAnimationsModule,
     AccordionModule,
@@ -70,6 +79,7 @@ const routes: Routes = [
     DataListModule,
     DialogModule,
     GrowlModule,
+    SidebarModule,
     GridsterModule,
     RouterModule.forRoot(routes),
     BrowserModule,
@@ -87,7 +97,7 @@ const routes: Routes = [
     }),
     AgGridModule.withComponents([SimpleAgGirdComponent]),
   ],
-  providers: [NewProductService, ProductService, UserService, {
+  providers: [AuthenticationService,NewProductService, ProductService, UserService, {
     provide: HTTP_INTERCEPTORS,
     useClass: ProductInterceptor,
     multi: true,

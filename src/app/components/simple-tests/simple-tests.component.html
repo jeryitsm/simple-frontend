@@ -1,9 +1,60 @@
-<p>
-  simple-tests works!
-</p>
-<ul class="list-group">
+<!-- <ul class="list-group">
   <li class="list-group-item active">Get json string data from File </li>
   <li class="list-group-item" *ngFor="let result of results">
     {{ result._id}}
   </li>
 </ul>
+
+<ul>
+  <li class="text" *ngFor="let item of items | async">
+    {{item.name}}
+  </li>
+</ul> -->
+
+<h1 style="text-align: center">Firebase Authentication</h1>
+<h1 style="text-align: center" *ngIf="authService.user | async">Welcome {{ (authService.user | async)?.email }}!</h1>
+
+<div *ngIf="!(authService.user | async)" style="text-align: center">
+  <input type="text" [(ngModel)]="email" placeholder="email">
+  <input type="password" [(ngModel)]="password" placeholder="password">
+  <br>
+  <br>
+  <button class="btn btn-success" type="button" (click)="login()" [disabled]="!email || !password">
+    Login
+  </button>
+
+  <button class="btn btn-info" type="button" (click)="visibleSidebar2 = true">
+    Signup
+  </button>
+</div>
+
+<div style="text-align: center">
+  <button class="btn btn-danger" type="button" (click)="logout()" *ngIf="authService.user | async">
+    Logout
+  </button>
+</div>
+
+
+
+<p-sidebar [(visible)]="visibleSidebar2" position="right">
+  <h1 style="font-weight:normal">Signup</h1>
+  <div class="ui-g ui-fluid">
+
+    <div class="ui-inputgroup">
+      <span class="ui-inputgroup-addon">
+        <i class="glyphicon glyphicon-user"></i>
+      </span>
+      <input type="text" pInputText placeholder="Email" [(ngModel)]="semail">
+    </div>
+
+    <div class="ui-inputgroup">
+      <span class="ui-inputgroup-addon">
+        <i class="glyphicon glyphicon-user"></i>
+      </span>
+      <input type="password" pInputText placeholder="Password" [(ngModel)]="spassword">
+    </div>
+  </div>
+  <br>
+  <button type="button" (click)="signup()" [disabled]="!semail || !spassword" class="btn btn-success">Add</button>
+  <button type="button" (click)="visibleSidebar2 = false" class="btn ">Cancel</button>
+</p-sidebar>
