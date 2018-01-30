@@ -31,7 +31,7 @@ import { SimpleAgGirdComponent } from './components/simple-ag-gird/simple-ag-gir
 import { AgGridModule } from 'ag-grid-angular/main';
 import { AccordionModule } from 'primeng/components/accordion/accordion';
 import { MenuItem } from 'primeng/components/common/api';
-import { SidebarModule,ButtonModule, DataScrollerModule, CalendarModule, DataListModule, DialogModule, GrowlModule } from 'primeng/primeng';
+import { MenubarModule,SidebarModule,ButtonModule, DataScrollerModule, CalendarModule, DataListModule, DialogModule, GrowlModule } from 'primeng/primeng';
 
 // import {AccordionModule} from 'primeng/primeng';     //accordion and accordion tab
 // import {MenuItem} from 'primeng/primeng';            //api
@@ -45,8 +45,15 @@ import { AngularFireModule } from 'angularfire2';
 import { environment } from '../environments/environment';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireAuthModule } from 'angularfire2/auth';
+import { SimpleMixingWidgetComponent } from './components/simple-mixing-widget/simple-mixing-widget.component';
+
+
+// import AWS = require('aws-sdk/global');
+// import individual service
+// import AWSS3 = require('aws-sdk/clients/s3');
 
 const routes: Routes = [
+  { path: 'app-simple-mixing-widget', component: SimpleMixingWidgetComponent },
   { path: 'app-simple-reactive-form', component: SimpleReactiveFormComponent },
   { path: 'app-simple-primeng', component: SimplePrimengComponent },
   { path: 'app-simple-tests', component: SimpleTestsComponent },
@@ -64,9 +71,11 @@ const routes: Routes = [
     SimpleAgGirdComponent,
     SimpleTestsComponent,
     SimplePrimengComponent,
-    SimpleReactiveFormComponent
+    SimpleReactiveFormComponent,
+    SimpleMixingWidgetComponent
   ],
   imports: [
+    GridsterModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     AngularFireAuthModule, 
@@ -80,7 +89,7 @@ const routes: Routes = [
     DialogModule,
     GrowlModule,
     SidebarModule,
-    GridsterModule,
+    MenubarModule,
     RouterModule.forRoot(routes),
     BrowserModule,
     BsDropdownModule.forRoot(),
@@ -95,7 +104,7 @@ const routes: Routes = [
       useFactory: (http: Http) => new TranslateStaticLoader(http, './assets/i18n', '.json'),
       deps: [Http]
     }),
-    AgGridModule.withComponents([SimpleAgGirdComponent]),
+    AgGridModule.withComponents([SimpleAgGirdComponent,SimpleMixingWidgetComponent]),
   ],
   providers: [AuthenticationService,NewProductService, ProductService, UserService, {
     provide: HTTP_INTERCEPTORS,

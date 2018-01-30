@@ -1,0 +1,33 @@
+<p-growl [(value)]="msgs"></p-growl>
+<!-- primeMessage -->
+
+<p-menubar [model]="items">
+    <!-- prime bar -->
+    <input (keyup)="onQuickFilterChanged($event)" class="form-control" type="text" pInputText placeholder="Search">
+    <!-- <button pButton label="Logout" icon="fa-sign-out"></button> -->
+</p-menubar>
+<!-- <button type="button" pButton (click)="changedOptions()" label="test" class="ui-button-success"></button> -->
+<gridster [options]="options" [style.height.px]="innerHeight-250">
+    <gridster-item [item]="item" *ngFor="let item of dashboard">
+        <div *ngIf="item.propName == 'ag-grid'">
+            <ag-grid-angular #agGrid [ngStyle]="styleAgGird" [enableFilter]="true" [enableFilter]="true" [enableSorting]="true" class="ag-theme-fresh"
+                [columnDefs]="columnDefs" [rowSelection]="rowSelection" (selectionChanged)="onSelectionChanged($event)" (gridReady)="onGridReady($event)"></ag-grid-angular>
+        </div>
+        <div style="text-align: center" *ngIf="item.propName == 'Announcement'">
+            <i class="glyphicon glyphicon-remove pull-right" (click)="removeItem(item)"></i>
+            <h1>Select product to add to the dashboard</h1>
+        </div>
+        <div *ngIf="item.propName == 'product'">
+            <div class="thumbnail">
+                <img src="{{item.product_img}}" style="height: 150px;width: 100%;cursor:pointer">
+                <div class="caption">
+                    <h3>{{item.product_name}}</h3>
+                    <h4>{{item.product_price|currency:'USD':true:'.2-2'}}</h4>
+                    <h4>{{ 'QTY'| translate}}: {{item.product_qty}} </h4>
+                    <i class="glyphicon glyphicon-remove" (click)="removeItem(item)"></i>
+                </div>
+            </div>
+        </div>
+
+    </gridster-item>
+</gridster>
