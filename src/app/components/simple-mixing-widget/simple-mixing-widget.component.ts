@@ -1,11 +1,14 @@
 //mixing between ag-grid, gridster, primeng and dynamic-component-loader 
-import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 // import { MenuItem } from 'primeng/primeng';
 import { GridsterConfig, GridsterItem } from 'angular-gridster2';
 
 import { Message } from 'primeng/components/common/api';
 import { MessageService } from 'primeng/components/common/messageservice'
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+
+import { NewsService }         from './news.service';
+import { NewsData }            from './news-data';
 
 @Component({
   selector: 'app-simple-mixing-widget',
@@ -42,8 +45,10 @@ export class SimpleMixingWidgetComponent implements OnInit {
   //----------------------------------------------------------
   innerHeight: any;
   innerWidth: any;
+  //--new--------------------------------------------------------
+  news: NewsData[];
 
-  constructor(private http: HttpClient, public viewContainerRef: ViewContainerRef, private messageService: MessageService) { }
+  constructor(private newsService: NewsService,private http: HttpClient,private messageService: MessageService) { }
 
   ngOnInit() {
     this.agGirdOnInit()
@@ -102,6 +107,7 @@ export class SimpleMixingWidgetComponent implements OnInit {
     this.dashboard = [
       { rows: 2, cols: 3, x: 0, y: 0, minItemRows: 2, minItemCols: 3, propName: "ag-grid" },
       { rows: 1, cols: 3, x: 3, y: 0, propName: "Announcement" },
+      { rows: 2, cols: 3, x: 3, y: 1, propName: "News" },
       // {  rows: 3,cols: 3, x: 3, y: 3 },
       //   {cols: undefined, rows: undefined, y: 1, x: 0},
       //   {cols: 1, rows: 1, y: undefined, x: undefined},
@@ -110,6 +116,7 @@ export class SimpleMixingWidgetComponent implements OnInit {
       //   {cols: 2, rows: 1, y: 2, x: 2, dragEnabled: true, resizeEnabled: true, label: 'Drag&Resize Enabled'},
       //   {cols: 1, rows: 1, y: 2, x: 4, dragEnabled: false, resizeEnabled: false, label: 'Drag&Resize Disabled'},
     ];
+    this.news = this.newsService.getNews();
   }
 
   // gridster function
@@ -237,5 +244,4 @@ export class SimpleMixingWidgetComponent implements OnInit {
     });
     this.selectedProduct = selectedRowsString
   }
-
 }

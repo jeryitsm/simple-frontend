@@ -46,6 +46,11 @@ import { environment } from '../environments/environment';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { SimpleMixingWidgetComponent } from './components/simple-mixing-widget/simple-mixing-widget.component';
+import { SimpleMixingWidgetDirective } from './components/simple-mixing-widget/simple-mixing-widget.directive';
+import { NewsComponent } from './components/simple-mixing-widget/news.component';
+import { NewsService } from './components/simple-mixing-widget/news.service';
+import { BbbNewsComponent } from './components/simple-mixing-widget/bbc-news.component';
+import { NbcNewsComponent } from './components/simple-mixing-widget/nbc-news.component';
 
 
 // import AWS = require('aws-sdk/global');
@@ -72,8 +77,13 @@ const routes: Routes = [
     SimpleTestsComponent,
     SimplePrimengComponent,
     SimpleReactiveFormComponent,
-    SimpleMixingWidgetComponent
+    SimpleMixingWidgetComponent,
+    SimpleMixingWidgetDirective,
+    NewsComponent,
+    BbbNewsComponent,
+    NbcNewsComponent
   ],
+  entryComponents: [ BbbNewsComponent, NbcNewsComponent ],
   imports: [
     GridsterModule,
     AngularFireModule.initializeApp(environment.firebase),
@@ -110,7 +120,7 @@ const routes: Routes = [
     provide: HTTP_INTERCEPTORS,
     useClass: ProductInterceptor,
     multi: true,
-  }],
+  },NewsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

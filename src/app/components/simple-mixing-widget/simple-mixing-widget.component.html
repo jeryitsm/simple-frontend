@@ -7,6 +7,7 @@
     <!-- <button pButton label="Logout" icon="fa-sign-out"></button> -->
 </p-menubar>
 <!-- <button type="button" pButton (click)="changedOptions()" label="test" class="ui-button-success"></button> -->
+
 <gridster [options]="options" [style.height.px]="innerHeight-250">
     <gridster-item [item]="item" *ngFor="let item of dashboard">
         <div *ngIf="item.propName == 'ag-grid'">
@@ -19,7 +20,7 @@
         </div>
         <div *ngIf="item.propName == 'product'">
             <div class="thumbnail">
-                <img src="{{item.product_img}}" style="height: 150px;width: 100%;cursor:pointer">
+                <img src="{{item.product_img}}" style="height: 70%;width: 100%;cursor:pointer">
                 <div class="caption">
                     <h3>{{item.product_name}}</h3>
                     <h4>{{item.product_price|currency:'USD':true:'.2-2'}}</h4>
@@ -27,6 +28,9 @@
                     <i style="cursor: pointer" class="glyphicon glyphicon-remove" (click)="removeItem(item)"></i>
                 </div>
             </div>
+        </div>
+        <div *ngIf="item.propName == 'News'">
+            <app-news [news]="news"></app-news>
         </div>
     </gridster-item>
 </gridster>
